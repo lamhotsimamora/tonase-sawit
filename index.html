@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hitung Timbangan Sawit</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/gh/lamhotsimamora/garuda-javascript@master/src/garuda.js"></script>
+</head>
+
+<body>
+    <div class="navbar bg-base-100 shadow-sm">
+        <div class="flex-1">
+            <a href="." class="btn btn-ghost text-xl">Hitung Timbangan</a>
+        </div>
+        <div class="flex-none">
+            <ul class="menu menu-horizontal px-1">
+                <li><a href=".">Home</a></li>
+                <li>
+                    <details>
+                        <summary>Setting</summary>
+                        <ul class="bg-base-100 rounded-t-none p-2">
+                            <li><a href="/setting.html">Info</a></li>
+                         
+                        </ul>
+                    </details>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <br>
+    <div id="app" class="container mx-auto">
+        <div class="card card-border bg-base-100 w-96">
+            <div class="card-body">
+                <h2 class="card-title">Hitung Timbangan</h2>
+
+                <hr>
+                <div role="alert" class="alert alert-warning">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <span>Total : Rp {{ total }}</span>
+                    
+                  </div>
+                  <hr>
+                  <div role="alert" class="alert alert-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>Total Tonase : {{ tonase }} Kg</span>
+                  </div>
+                  <hr>
+                <p>
+                    <input type="text"  ref="mobil_kotor"  v-model="mobil_kotor" placeholder="Berat Mobil Kotor" class="input" /> <br>  <br>  
+                    <input type="text" ref="mobil_bersih" v-model="mobil_bersih" placeholder="Berat Mobil Bersih" class="input" /> <br>  <br> 
+                    <input type="text" v-model="potongan_sawit" placeholder="Potongan Sawit" class="input" /> <br>  <br>
+                    <input type="text" v-model="harga_sawit" placeholder="Harga Sawit" class="input" /> <br>  <br>
+                    <input type="text" v-model="upah_muat" placeholder="Upah Muat" class="input" />
+                </p>
+                <div class="card-actions justify-end">
+                    <button class="btn btn-primary" @click="hitung">Calculate</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    total: null,
+                    mobil_kotor : null,
+                    mobil_bersih : null,
+                    upah_muat : null,
+                    potongan_sawit : null,
+                    harga_sawit: null ,
+                    tonase : null
+                }
+            },
+            methods: {
+                hitung() {
+                    // fetch('https://jsonplaceholder.typicode.com/todos/1')
+                    //     .then(response => response.json())
+                    //     .then(json => this.title = json.title)
+                   
+                     if (this.mobil_kotor==null){
+                        this.$refs.mobil_kotor.focus()
+                        return;
+                    }
+                    if (this.mobil_bersih==null){
+                        this.$refs.mobil_bersih.focus()
+                        return;
+                    }
+                    var mobil = this.mobil_kotor - this.mobil_bersih;
+
+
+                    this.total  = mobil - this.potongan_sawit;
+                    this.tonase = this.total;
+                    this.total = this.total * this.harga_sawit ; 
+
+                    this.total = _moneyFormat(this.total - this.upah_muat);
+                },
+                load(){
+                    this.harga_sawit = _getStorage('harga_sawit');
+                    this.upah_muat = _getStorage('upah_muat');
+                    this.potongan_sawit = _getStorage('potongan_sawit');
+
+                }
+            },
+            mounted() {
+                this.load()
+            }
+        }).mount('#app')
+
+    </script>
+</body>
+
+</html>

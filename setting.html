@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hitung Timbangan Sawit</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/gh/lamhotsimamora/garuda-javascript@master/src/garuda.js"></script>
+</head>
+
+<body>
+    <div class="navbar bg-base-100 shadow-sm">
+        <div class="flex-1">
+            <a href="." class="btn btn-ghost text-xl">Hitung Timbangan</a>
+        </div>
+        <div class="flex-none">
+            <ul class="menu menu-horizontal px-1">
+                <li><a href=".">Home</a></li>
+                <li>
+                    <details>
+                        <summary>Setting</summary>
+                        <ul class="bg-base-100 rounded-t-none p-2">
+                            <li><a href="/setting.html">Info</a></li>
+                         
+                        </ul>
+                    </details>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <br>
+    <div id="app" class="container mx-auto">
+        <div class="card card-border bg-base-100 w-96">
+            <div class="card-body">
+                <h2 class="card-title">Hitung Timbangan</h2>
+
+                <p> 
+                    <input type="text" v-model="potongan_sawit" placeholder="Potongan Sawit" class="input" /> <br>  <br>
+                    <input type="text" v-model="harga_sawit" placeholder="Harga Sawit" class="input" /> <br>  <br>
+                    <input type="text" v-model="upah_muat" placeholder="Upah Muat" class="input" />
+                </p>
+                <div class="card-actions justify-end">
+                    <button class="btn btn-primary" @click="save">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    
+                    upah_muat : null,
+                    potongan_sawit : null,
+                    harga_sawit: null 
+                }
+            },
+            methods: {
+                save() {
+                    _saveStorage('harga_sawit',this.harga_sawit);
+                    _saveStorage('upah_muat',this.upah_muat);
+                    _saveStorage('potongan_sawit',this.potongan_sawit);
+                    
+                    alert("Save successfully !")
+                },
+                load(){
+                    this.harga_sawit = _getStorage('harga_sawit');
+                    this.upah_muat = _getStorage('upah_muat');
+                    this.potongan_sawit = _getStorage('potongan_sawit');
+
+                }
+            },
+            mounted() {
+                this.load()
+            }
+        }).mount('#app')
+
+    </script>
+</body>
+
+</html>
