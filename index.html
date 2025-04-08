@@ -62,6 +62,7 @@
                 </p>
                 <div class="card-actions justify-end">
                     <button class="btn btn-primary" @click="hitung">Calculate</button>
+                    <button class="btn btn-primary" @click="save">Save</button>
                 </div>
             </div>
         </div>
@@ -81,6 +82,13 @@
                 }
             },
             methods: {
+                save() {
+                    _saveStorage('harga_sawit',this.harga_sawit);
+                    _saveStorage('upah_muat',this.upah_muat);
+                    _saveStorage('potongan_sawit',this.potongan_sawit);
+                    
+                    alert("Save successfully !")
+                },
                 hitung() {
                     // fetch('https://jsonplaceholder.typicode.com/todos/1')
                     //     .then(response => response.json())
